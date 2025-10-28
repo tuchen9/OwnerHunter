@@ -18,8 +18,11 @@ This repository provides:
 ## 📁 Repository Structure
 
 OwnerHunter/
+
 │
+
 ├─ preprocessing.py # Randomly split data (train/dev/test)
+
 ├─ example.py # Example pool generator
 ├─ multi_aug.py # Multimodal augmentation: domain, logo cues
 ├─ api_owner.py # Candidate owner recognition and self-verification via LLM API
