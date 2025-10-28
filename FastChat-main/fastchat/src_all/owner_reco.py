@@ -158,7 +158,7 @@ if __name__ == "__main__":
 
     parser.add_argument('--input_path', type=str, default='../data/woi_cn/test', help='input data directory')
     parser.add_argument('--output_path', type=str, default='../data/woi_cn/OwnerHunter', help='output data directory')
-    parser.add_argument('--aug_path', type=str, default='../data/woi_cn/OwnerHunter/aug', help='input data directory')
+    parser.add_argument('--aug_path', type=str, default='../data/woi_cn/OwnerHunter/aug', help='aug data directory')
     parser.add_argument('--mode', type=str, default='aug-example')
     parser.add_argument("--seed", type=int, default=12, help="Random seed for reproducibility")
     parser.add_argument('--token_num', type=int, default=1500)
