@@ -51,7 +51,7 @@ OwnerHunter/
 
 ---
 
-## ✅ Install environment
+## 🧩 Install environment
 
 ```bash
 pip install -r requirements.txt
@@ -121,13 +121,13 @@ python evaluation.py \
 
 ---
 
-## 📦 Reproducibility Notes
+## 📌 Reproducibility Notes
 
 - All LLM-based scripts support a fixed `--seed` parameter to ensure reproducible outputs across runs under identical configurations. We use five independent random seeds `{12, 34, 73, 147, 161}` for all main experiments to report performance statistics and conduct significance tests.
 
 ---
 
-## 🧩 Vanilla-LLM Baseline Usage
+## 🔑 Vanilla-LLM Baseline Usage
 
 OwnerHunter shares the same inference framework with the Vanilla-LLM baseline.  
 When setting the parameter:
