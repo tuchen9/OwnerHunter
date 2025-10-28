@@ -40,7 +40,7 @@ OwnerHunter/
 
 ---
 
-### ✅ Install environment
+## ✅ Install environment
 
 ```bash
 pip install -r requirements.txt
@@ -62,12 +62,12 @@ Evaluation performed by `evaluation.py`.
 ## 🔧 End-to-End Reproduction Example
 Below shows how to reproduce the complete OwnerHunter pipeline on WOI-cn with Qwen1.5-14B:
 
-# Stage 1: Multimodal augmentation
+### Stage 1: Multimodal augmentation
 python multi_aug.py \
     --input_path ./data/woi_cn/test \
     --output_path ./data/woi_cn/ownerhunter_qwen/aug
 
-# Stage 2: Candidate owner recognition
+### Stage 2: Candidate owner recognition
 cd ./FastChat-main
 python -m fastchat.src_all.owner_reco \
     --model ../Qwen-main/Qwen/Qwen1.5-14B-Chat \
@@ -78,14 +78,14 @@ python -m fastchat.src_all.owner_reco \
     --num-gpus 2
 cd ../
 
-# Stage 3: Processing before self-verification
+### Stage 3: Processing before self-verification
 python hybird_ranking.py \
     --raw_path ./data/woi_cn/test \
     --res_path ./data/woi_cn/ownerhunter_qwen14b/results \
     --aug_path ./data/woi_cn/ownerhunter_qwen/aug \
     --verified False
 
-# Stage 4: Self-verification
+### Stage 4: Self-verification
 cd ./FastChat-main
 python -m fastchat.src_all.self_veri \
     --model ../Qwen-main/Qwen/Qwen1.5-14B-Chat \
@@ -94,17 +94,18 @@ python -m fastchat.src_all.self_veri \
     --num-gpus 2
 cd ../
 
-# Final: Hybrid ranking with verification
+### Final: Hybrid ranking with verification
 python hybird_ranking.py \
     --raw_path ./data/woi_cn/test \
     --res_path ./data/woi_cn/ownerhunter_qwen14b/results \
     --aug_path ./data/woi_cn/ownerhunter_qwen/aug \
     --verified True
 
-# Evaluation
+### Evaluation
 python evaluation.py \
     --res_path ./data/woi_cn/ownerhunter_qwen14b/ranking
 
+---
 
 ## 🔑 Experimental Settings
 | Component                | Setting                                            |
@@ -115,6 +116,7 @@ python evaluation.py \
 | Weights α, β             | `(0.9, 0.1)`                                       |
 | Thres_b, Thres_c         | `(0.1, 0.9)`                                       |
 
+---
 
 ## 📦 Reproducibility Notes
 
