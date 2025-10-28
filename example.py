@@ -88,8 +88,13 @@ def main(args):
                 examples.append(item)
                 sentences = split(bert_tokenizer, item['page_text'], 510)
                 batch = bert_tokenizer(sentences, max_length=512, truncation=True, padding='max_length', return_tensors="pt").to(device)
-                embedding = bert_model(input_ids=batch['input_ids'], attention_mask=batch['attention_mask'], token_type_ids=batch['token_type_ids'])[1]
-                example_embeddings.append(torch.mean(embedding, dim=0))
+                outputs = bert_model(input_ids=batch['input_ids'], attention_mask=batch['attention_mask'], token_type_ids=batch['token_type_ids'])
+                last_hidden_state = outputs.last_hidden_state  # [B, L, H]
+                attention_mask = batch['attention_mask'].unsqueeze(-1)  # [B, L, 1]
+                sum_embeddings = (last_hidden_state * attention_mask).sum(dim=1)  # [B, H]
+                sum_mask = attention_mask.sum(dim=1).clamp(min=1e-9)  # [B, 1]
+                sentence_embeddings = sum_embeddings / sum_mask  # [B, H]
+                example_embeddings.append(torch.mean(sentence_embeddings, dim=0))
         example_embeddings = F.normalize(torch.stack(example_embeddings).to(device), dim=-1).permute(1,0)
 
     print(f"筛选得到示例{len(examples)}条")
@@ -110,7 +115,13 @@ def main(args):
             sentences = split(bert_tokenizer, website, 510)[:10]
         with torch.no_grad():
             batch = bert_tokenizer(sentences, max_length=512, truncation=True, padding='max_length', return_tensors="pt").to(device)
-            embedding = torch.mean(bert_model(input_ids=batch['input_ids'], attention_mask=batch['attention_mask'], token_type_ids=batch['token_type_ids'])[1], keepdim=True, dim=0)
+            outputs = bert_model(input_ids=batch['input_ids'], attention_mask=batch['attention_mask'], token_type_ids=batch['token_type_ids'])
+            last_hidden_state = outputs.last_hidden_state  # [B, L, H]
+            attention_mask = batch['attention_mask'].unsqueeze(-1)  # [B, L, 1]
+            sum_embeddings = (last_hidden_state * attention_mask).sum(dim=1)  # [B, H]
+            sum_mask = attention_mask.sum(dim=1).clamp(min=1e-9)  # [B, 1]
+            sentence_embeddings = sum_embeddings / sum_mask  # [B, H]
+            embedding = torch.mean(sentence_embeddings, keepdim=True, dim=0)
             cos_sim = torch.mm(F.normalize(embedding, dim=-1), example_embeddings).squeeze()
             sorted_cos_sim, sorted_indices = torch.sort(cos_sim, descending=True)
             # print(sorted_cos_sim)

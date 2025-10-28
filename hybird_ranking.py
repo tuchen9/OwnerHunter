@@ -226,7 +226,6 @@ def ranking_score(pre_dic, filter_mentions, html, aug, args):
 
 def main(args):
     print(args.res_path)
-    aug_path = os.path.join(args.aug_path, 'results')
     self_veri_path = os.path.join(args.res_path, '../confirm/results/')
     
     F_before_sv = 0
@@ -241,6 +240,7 @@ def main(args):
         # print(f'raw: {text}')
         
         if args.aug is True:
+            aug_path = os.path.join(args.aug_path, 'results')
             aug = read_file(aug_path + item)
             pa = r'^\d+[\.\d+]*$'
             if len(re.findall(pa, aug)) > 0 or aug == '无相关信息':
@@ -305,6 +305,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--raw_path', type=str, default='./data/woi_cn/test/')
     parser.add_argument('--res_path', type=str, default='./data/woi_cn/OwnerHunter/results/')
+    parser.add_argument('--aug_path', type=str, default='./data/woi_cn/OwnerHunter/aug')
     parser.add_argument('--lang', type=str, default='ch')
     parser.add_argument('--aug', type=bool, default=True)
     parser.add_argument('--verified', type=bool, default=True)
