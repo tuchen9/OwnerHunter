@@ -237,9 +237,9 @@ def main(args, file_list, exists_results, exists_errors):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', type=str, default='qwen1.5-72b-chat')
-    parser.add_argument('--input_path', type=str, default='../data/0926/anhui0926_label_html/', help='input data directory')
-    parser.add_argument('--output_path', type=str, default='./anhui_outputs/', help='output data directory')
-    parser.add_argument('--aug_path', type=str, default='./data/OwnerHunter/aug', help='input data directory')
+    parser.add_argument('--input_path', type=str, default='./data/woi_cn/test', help='input data directory')
+    parser.add_argument('--output_path', type=str, default='./data/woi_cn/OwnerHunter', help='output data directory')
+    parser.add_argument('--aug_path', type=str, default='./data/woi_cn/OwnerHunter/aug', help='input data directory')
     parser.add_argument('--token_num', type=int, default=30000)
     parser.add_argument('--mode', type=str, default='aug-example')
     parser.add_argument('--lang', type=str, default='ch')
