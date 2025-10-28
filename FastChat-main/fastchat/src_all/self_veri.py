@@ -110,7 +110,7 @@ if __name__ == "__main__":
     parser.add_argument("--debug", action="store_true")
     parser.add_argument("--message", type=str, default="Hello! Who are you?")
 
-    parser.add_argument('--input_path', type=str, default='..data/OwnerHunter/dealed/', help='input data directory')
+    parser.add_argument('--input_path', type=str, default='../data/woi_cn/OwnerHunter/dealed/', help='input data directory')
     parser.add_argument("--seed", type=int, default=12, help="Random seed for reproducibility")
     parser.add_argument('--token_num', type=int, default=1500)
 
