@@ -123,9 +123,9 @@ def main(args, file_list, exists_results, exists_errors):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--temperature", type=float, default=0.001)
-    parser.add_argument('--model_path', type=str, default='./GLM-4V/', help='model directory')
-    parser.add_argument('--input_path', type=str, default='./data/', help='input data directory')
-    parser.add_argument('--output_path', type=str, default='./data/OwnerHunter/aug', help='output data directory')
+    parser.add_argument('--model_path', type=str, default='./GLM-4V', help='model directory')
+    parser.add_argument('--input_path', type=str, default='./data/woi_cn', help='input data directory')
+    parser.add_argument('--output_path', type=str, default='./data/woi_cn/OwnerHunter/aug', help='output data directory')
     parser.add_argument("--seed", type=int, default=12, help="Random seed for reproducibility")
     
     args = parser.parse_args()
