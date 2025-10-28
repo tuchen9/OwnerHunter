@@ -1,0 +1,17 @@
+torch>=2.0.0
+transformers>=4.35.0
+accelerate>=0.31.0
+fastchat>=0.2.20
+vllm>=0.3.0
+sentencepiece
+tqdm
+numpy>=1.26.0
+pandas>=2.2.0
+requests
+opencv-python
+beautifulsoup4
+einops
+PyYAML
+regex
+huggingface-hub>=0.33.0
+scikit-learn>=1.4.0
