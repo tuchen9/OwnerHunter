@@ -8,7 +8,7 @@ from tqdm import tqdm
 from transformers import set_seed
 
 from fastchat.model import load_model, get_conversation_template, add_model_args
-from fastchat.src_all.prompt_generator import PromptGenerator
+import fastchat.src_all.prompt_generator as pg
 
 
 def read_json(path):
@@ -37,7 +37,7 @@ def deal_folder(file_list, path, FileType):
 
 
 @torch.inference_mode()
-def main(args, generator, file_list, exists_results, exists_errors):
+def main(args, file_list, exists_results, exists_errors):
     model, tokenizer = load_model(
         args.model_path,
         device=args.device,
@@ -108,9 +108,9 @@ def main(args, generator, file_list, exists_results, exists_errors):
         
         for i in range(len(token_list)):
             if args.mode == 'vanilla':
-                msg = generator.get_prompt_vanilla(tokenizer.decode(token_list[i]))
+                msg = pg.get_prompt_vanilla(tokenizer.decode(token_list[i]))
             else:
-                msg = generator.get_prompt_aug_text_score_example(multi_aug, tokenizer.decode(token_list[i]), example)
+                msg = pg.get_prompt_aug_text_score_example(multi_aug, tokenizer.decode(token_list[i]), example)
 
             try:
                 conv = get_conversation_template(args.model_path).copy()
@@ -193,6 +193,4 @@ if __name__ == "__main__":
     else:
         print("Please specify a correct path!")
 
-    generator = PromptGenerator(args.model_path)
-
-    main(args, generator, file_list, exists_results, exists_errors)
+    main(args, file_list, exists_results, exists_errors)

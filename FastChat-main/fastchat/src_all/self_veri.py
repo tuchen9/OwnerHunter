@@ -6,7 +6,7 @@ from tqdm import tqdm
 from transformers import set_seed
 
 from fastchat.model import load_model, get_conversation_template, add_model_args
-from fastchat.src_all.prompt_generator import PromptGenerator
+import fastchat.src_all.prompt_generator as pg
 
 
 def read_file(path):
@@ -35,7 +35,7 @@ def deal_folder(file_list, path, args):
 
 
 @torch.inference_mode()
-def main(args, generator, file_list, exists_results, exists_errors, output_path):
+def main(args, file_list, exists_results, exists_errors, output_path):
     model, tokenizer = load_model(
         args.model_path,
         device=args.device,
@@ -63,7 +63,7 @@ def main(args, generator, file_list, exists_results, exists_errors, output_path)
         for text in dealed_json.keys():
             print(text)
             try:
-                msg = generator.get_prompt_filter(text)
+                msg = pg.get_prompt_filter(text)
                 
                 # print(msg)
                 conv = get_conversation_template(args.model_path).copy()
@@ -142,6 +142,4 @@ if __name__ == "__main__":
     else:
         print("Please specify a correct path!")
 
-    generator = PromptGenerator(args.model_path)
-
-    main(args, generator, file_list, exists_results, exists_errors, output_path)
+    main(args, file_list, exists_results, exists_errors, output_path)
