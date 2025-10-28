@@ -78,6 +78,7 @@ python -m fastchat.src_all.owner_reco \
     --aug_path ../data/woi_cn/ownerhunter_qwen/aug \
     --mode aug-example \
     --num-gpus 2
+    --k 2
 cd ../
 
 ### Stage 3: Processing before self-verification
@@ -114,7 +115,7 @@ python evaluation.py \
 | -------------------------| -------------------------------------------------- |
 | Seeds                    | `{12, 34, 73, 147, 161}`                           |
 | Decoding Setup           | `temperature=0.01, top_p=1.0`                      |
-| In-context examples K    | `{0,1,2,3,4}` (default: 2)                         |
+| In-context examples K    | `2`                                                |
 | Weights α, β             | `(0.9, 0.1)`                                       |
 | Thres_b, Thres_c         | `(0.1, 0.9)`                                       |
 
