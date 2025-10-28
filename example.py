@@ -69,6 +69,7 @@ def main(args):
     with torch.no_grad():
         for filepath in tqdm(train_file_list):
             name = filepath.split('/')[-1].split('.html')[0]
+            id = name.split('_')[0]
             label = ','.join(name.split('_')[1:])
             website = ' '.join(read_file(filepath).split('\n'))
             soup = BeautifulSoup(website, 'html.parser')
@@ -77,7 +78,7 @@ def main(args):
                 item={}
                 item['page_text']=text_website
                 item['owner_name']=label
-                file = glob.glob(aug_path+examples[sorted_indices[i]]['_id']+'*')[0]
+                file = glob.glob(aug_path + id +'*')[0]
                 example_aug = read_file(file)
                 if len(re.findall(pa, example_aug)) > 0:
                     example_aug = '无'
