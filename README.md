@@ -46,6 +46,8 @@ OwnerHunter/
 pip install -r requirements.txt
 ```
 
+---
+
 ## 🧠 Pipeline Overview
 
 OwnerHunter includes **four sequential stages**:
