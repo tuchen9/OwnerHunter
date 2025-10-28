@@ -121,18 +121,25 @@ python evaluation.py \
 
 ---
 
-## 🔑 Experimental Settings
-| Component                | Setting                                            |
-| -------------------------| -------------------------------------------------- |
-| Seeds                    | `{12, 34, 73, 147, 161}`                           |
-| Decoding Setup           | `temperature=0.01, top_p=1.0`                      |
-| In-context examples K    | `2`                                                |
-| Weights α, β             | `(0.9, 0.1)`                                       |
-| Thres_b, Thres_c         | `(0.1, 0.9)`                                       |
+## 📦 Reproducibility Notes
+
+- All LLM-based scripts support a fixed `--seed` parameter to ensure reproducible outputs across runs under identical configurations. We use five independent random seeds `{12, 34, 73, 147, 161}` for all main experiments to report performance statistics and conduct significance tests.
 
 ---
 
-## 📦 Reproducibility Notes
+## 🧩 Vanilla-LLM Baseline Usage
 
-- All scripts are **inference-only**
-- Each stage produces deterministic results under fixed seeds
+OwnerHunter shares the same inference framework with the Vanilla-LLM baseline.  
+When setting the parameter:
+
+
+the pipeline disables multimodal augmentation and self-verification, and performs **zero-shot webpage owner extraction** directly via LLMs.
+
+The following scripts support `--mode vanilla`:
+
+| Script | Deployment | Function |
+|--------|------------|----------|
+| `api_owner.py` | Online API | Vanilla-LLM via remote API calls |
+| `owner_reco.py` | Local FastChat inference | Vanilla-LLM using a locally deployed model |
+| `evaluation.py` | — | Evaluation of Vanilla-LLM predictions |
+
