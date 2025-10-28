@@ -1,11 +1,6 @@
-"""
-Usage:
-python3 -m fastchat.serve.huggingface_api --model ~/model_weights/vicuna-7b/
-"""
 import os
 import re
 import json
-import resource
 import argparse
 import torch
 from bs4 import BeautifulSoup
@@ -14,13 +9,6 @@ from transformers import set_seed
 
 from fastchat.model import load_model, get_conversation_template, add_model_args
 from fastchat.src_all.prompt_generator import PromptGenerator
-
-
-def set_memory_limit(maxsize):
-    _, hard = resource.getrlimit(resource.RLIMIT_AS)
-    if maxsize is None:
-        maxsize = hard
-    resource.setrlimit(resource.RLIMIT_AS, (maxsize, hard))
 
 
 def read_json(path):
@@ -46,10 +34,6 @@ def deal_folder(file_list, path, FileType):
         if os.path.isfile(now_path):
             if now_path.split(".")[-1] not in FileType:
                 file_list.append(now_path)
-        # elif os.path.isdir(now_path):
-        #     deal_folder(file_list, now_path, args)
-        # else:
-        #     print("Please specify a correct path!")
 
 
 @torch.inference_mode()
@@ -70,8 +54,9 @@ def main(args, generator, file_list, exists_results, exists_errors):
             os.remove(args.output_path + '/results/' + error_name)
         os.remove(args.output_path + '/errors/' + error_name)
     
-    aug_path = args.input_path + '/multi_aug/results/'
-    example_path = args.input_path + '/examples/'
+    aug_path = os.path.join(args.aug_path, 'results')
+    example_path = os.path.join(args.input_path, 'examples')
+    
     for filepath in tqdm(file_list):
         name = filepath.split('/')[-1].split('.html')[0]
         if name in exists_results and name not in exists_errors:
@@ -102,10 +87,7 @@ def main(args, generator, file_list, exists_results, exists_errors):
         count = 1
         for k in range(len(text_list)):
             if len(text_list[k]) > 0 and text_list[k].isspace() == False:
-                if args.mode == 'block':
-                    raw_tokens = tokenizer.encode('[' + str(count) + ']' + ' '.join(text_list[k].split()))
-                else:
-                    raw_tokens = tokenizer.encode(' '.join(text_list[k].split()))
+                raw_tokens = tokenizer.encode(' '.join(text_list[k].split()))
                 if len(token_tmp) + len(raw_tokens) <= args.token_num:
                     if len(token_tmp) == 0:
                         token_tmp = raw_tokens
@@ -125,8 +107,8 @@ def main(args, generator, file_list, exists_results, exists_errors):
         
         
         for i in range(len(token_list)):
-            if args.mode == 'simple':
-                msg = generator.get_prompt_simple(tokenizer.decode(token_list[i]))
+            if args.mode == 'vanilla':
+                msg = generator.get_prompt_vanilla(tokenizer.decode(token_list[i]))
             else:
                 msg = generator.get_prompt_aug_text_score_example(multi_aug, tokenizer.decode(token_list[i]), example)
 
@@ -163,8 +145,6 @@ def main(args, generator, file_list, exists_results, exists_errors):
 
 
 if __name__ == "__main__":
-    set_memory_limit(220 * 1024 * 1024 * 1024)
-    
     parser = argparse.ArgumentParser()
     add_model_args(parser)
     parser.add_argument(
@@ -178,7 +158,8 @@ if __name__ == "__main__":
 
     parser.add_argument('--input_path', type=str, default='./data/', help='input data directory')
     parser.add_argument('--output_path', type=str, default='./data/OwnerHunter/', help='output data directory')
-    parser.add_argument('--mode', type=str, default='text')
+    parser.add_argument('--aug_path', type=str, default='./data/OwnerHunter/aug', help='input data directory')
+    parser.add_argument('--mode', type=str, default='aug-example')
     parser.add_argument("--seed", type=int, default=12, help="Random seed for reproducibility")
     parser.add_argument('--token_num', type=int, default=1500)
     parser.add_argument('--k', type=int, default=1)
@@ -186,11 +167,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     set_seed(args.seed)
-    
-    # Reset default repetition penalty for T5 models.
-    if "t5" in args.model_path and args.repetition_penalty == 1.0:
-        args.repetition_penalty = 1.2
-
 
     if not os.path.isdir(args.output_path):
         print('Making new dir: ' + args.output_path)
