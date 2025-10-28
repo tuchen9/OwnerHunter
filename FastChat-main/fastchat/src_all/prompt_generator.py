@@ -13,33 +13,6 @@ class PromptGenerator:
         num_tokens = len(tokenizer.encode(text))
         return num_tokens
 
-
-    def get_prompt_aug(self, domain):
-
-        rules = [
-            "1.注意该字符串可能是网站所有者的拼音全称、拼音首字母缩写、英文全称、英文首字母缩写，不包含数字；",
-            "2.识别的字符串必须从网站的域名中提取；",
-            "3.返回的信息只需要字符串，不必说明识别的原因；",
-            "4.将输出的字符串使用大括号括起来；"
-        ]
-        prompt_rules = f'现在有一个任务，需要你来协助：根据以下规则从网站的域名中识别出可能与网站所有者有关的字符串：\n' + '\n'.join(rules)
-
-        prompt_example = "接下来列举三个例子供你参考，例如，给你以下网站的域名：\n" + \
-            "www.ahguohuagroup.com\n" +\
-            "\n按规则输出可能与网站所有者有关的字符串，示例的识别结果为: \n" +\
-            "{ahguohuagroup}\n" + \
-            "给你以下网站的域名：\n" + \
-            "tc441.ustc.edu.cn\n" +\
-            "\n按规则输出可能与网站所有者有关的字符串，示例的识别结果为: \n" +\
-            "{ustc}\n" + \
-            "给你以下网站的域名：\n" + \
-            "shyb18.com\n" +\
-            "\n按规则输出可能与网站所有者有关的字符串，示例的识别结果为: \n" +\
-            "{shyb}\n"
-
-        prompt_instruction = '现在，需要你识别的网站域名为：\n' + domain + '\n\n按上述规则识别可能与网站所有者有关的字符串，识别结果为：'
-
-        return '\n'.join([prompt_rules, prompt_example, prompt_instruction])
     
     def get_prompt_simple(self, website):
         prompt_rules = '请你从网站页面的文本内容中识别出网站的所有者名称，输出格式为{可能的网站所有者名称}，不要输出其他信息，不必说明识别的原因：\n'
