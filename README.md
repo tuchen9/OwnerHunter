@@ -19,8 +19,6 @@ This repository provides:
 
 OwnerHunter/
 
-│
-
 ├─ preprocessing.py # Randomly split data (train/dev/test)
 
 ├─ example.py # Example pool generator
@@ -38,13 +36,17 @@ OwnerHunter/
 ├─ tools.py # Utility functions
 
 ├─ example.py # Example pool generator
-│
+
 ├─ FastChat-main/
+
 │ └─ fastchat/src_all/
+
 │ ├─ owner_reco.py # Candidate owner recognition via LLM
+
 │ ├─ self_veri.py # LLM self-verification: hallucination reduction
+
 │ └─ prompt_generator.py # Prompt templates used for LLM inference
-│
+
 └─ data/ # Dataset directories (user-provided)
 
 ---
