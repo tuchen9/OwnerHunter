@@ -24,11 +24,17 @@ OwnerHunter/
 ├─ preprocessing.py # Randomly split data (train/dev/test)
 
 ├─ example.py # Example pool generator
+
 ├─ multi_aug.py # Multimodal augmentation: domain, logo cues
+
 ├─ api_owner.py # Candidate owner recognition and self-verification via LLM API
+
 ├─ prompt_generator.py # Prompt templates used for LLM inference
+
 ├─ hybird_ranking.py # Entity disambiguation & score aggregation
+
 ├─ evaluation.py # Compute P/R/F1 metrics
+
 ├─ tools.py # Utility functions
 
 ├─ example.py # Example pool generator
